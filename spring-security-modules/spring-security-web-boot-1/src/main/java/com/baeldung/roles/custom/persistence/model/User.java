@@ -1,5 +1,6 @@
 package com.baeldung.roles.custom.persistence.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -16,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_table")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -79,9 +80,7 @@ public class User {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("User [id=").append(id).append(", username=").append(username).append(", password=").append(password).append(", privileges=").append(privileges).append(", organization=").append(organization).append("]");
-        return builder.toString();
+        return "User [id=" + id + ", username=" + username + ", password=" + password + ", privileges=" + privileges + ", organization=" + organization + "]";
     }
 
     @Override
@@ -140,9 +139,7 @@ public class User {
             if (other.username != null) {
                 return false;
             }
-        } else if (!username.equals(other.username)) {
-            return false;
-        }
+        } else return username.equals(other.username);
         return true;
     }
 }

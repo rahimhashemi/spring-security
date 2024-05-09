@@ -1,17 +1,18 @@
 package com.baeldung.roles.rolesauthorities.persistence;
 
-import jakarta.transaction.Transactional;
-
 import com.baeldung.roles.rolesauthorities.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class UserService implements IUserService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public User findUserByEmail(String email) {
         return repository.findByEmail(email);

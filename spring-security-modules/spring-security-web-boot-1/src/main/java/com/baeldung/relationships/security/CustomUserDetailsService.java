@@ -1,24 +1,24 @@
 package com.baeldung.relationships.security;
 
+import com.baeldung.relationships.models.AppUser;
+import com.baeldung.relationships.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.baeldung.relationships.repositories.UserRepository;
-import com.baeldung.relationships.models.AppUser;
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private WebApplicationContext applicationContext;
+    private final WebApplicationContext applicationContext;
 
     private UserRepository userRepository;
+
+    public CustomUserDetailsService(WebApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @PostConstruct
     public void completeSetup() {

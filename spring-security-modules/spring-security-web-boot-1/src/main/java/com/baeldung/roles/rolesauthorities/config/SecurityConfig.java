@@ -1,6 +1,7 @@
 package com.baeldung.roles.rolesauthorities.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baeldung.roles.rolesauthorities.CustomAuthenticationProvider;
+import com.baeldung.roles.rolesauthorities.persistence.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,22 +18,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-import com.baeldung.roles.rolesauthorities.CustomAuthenticationProvider;
-import com.baeldung.roles.rolesauthorities.persistence.UserRepository;
-
 @Configuration
 @ComponentScan(basePackages = {"com.baeldung.rolesauthorities"})
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private LogoutSuccessHandler myLogoutSuccessHandler;
+    private final LogoutSuccessHandler myLogoutSuccessHandler;
+
+    public SecurityConfig(UserRepository userRepository, UserDetailsService userDetailsService,
+                          LogoutSuccessHandler myLogoutSuccessHandler) {
+        this.userRepository = userRepository;
+        this.userDetailsService = userDetailsService;
+        this.myLogoutSuccessHandler = myLogoutSuccessHandler;
+    }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -43,7 +45,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/resources/**");
+        return web -> web.ignoring().requestMatchers("/resources/**");
     }
     
     @Bean

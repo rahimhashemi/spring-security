@@ -1,6 +1,5 @@
 package com.baeldung.roles.ip.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,8 +17,11 @@ import org.springframework.security.web.access.expression.WebExpressionAuthoriza
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomIpAuthenticationProvider authenticationProvider;
+    private final CustomIpAuthenticationProvider authenticationProvider;
+
+    public SecurityConfig(CustomIpAuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
+    }
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService(HttpSecurity http) throws Exception {

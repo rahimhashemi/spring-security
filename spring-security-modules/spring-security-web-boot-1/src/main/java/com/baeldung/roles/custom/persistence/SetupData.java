@@ -1,34 +1,36 @@
 package com.baeldung.roles.custom.persistence;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
-import jakarta.annotation.PostConstruct;
-
 import com.baeldung.roles.custom.persistence.dao.OrganizationRepository;
 import com.baeldung.roles.custom.persistence.dao.PrivilegeRepository;
 import com.baeldung.roles.custom.persistence.dao.UserRepository;
 import com.baeldung.roles.custom.persistence.model.Organization;
 import com.baeldung.roles.custom.persistence.model.Privilege;
 import com.baeldung.roles.custom.persistence.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 @Component
 public class SetupData {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PrivilegeRepository privilegeRepository;
+    private final PrivilegeRepository privilegeRepository;
 
-    @Autowired
-    private OrganizationRepository organizationRepository;
+    private final OrganizationRepository organizationRepository;
 
-    @Autowired
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
+
+    public SetupData(UserRepository userRepository, PrivilegeRepository privilegeRepository,
+                     OrganizationRepository organizationRepository, PasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.privilegeRepository = privilegeRepository;
+        this.organizationRepository = organizationRepository;
+        this.encoder = encoder;
+    }
 
     @PostConstruct
     public void init() {
